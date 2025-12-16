@@ -1,0 +1,406 @@
+/* ============================================
+   UNIVERSIDADE SK - Sistema de Tema
+   Cores baseadas na logo Grupo SK
+   ============================================ */
+
+:root {
+  /* === Cores Principais SK === */
+  --sk-red: #E31837;
+  --sk-red-light: #FF3D5A;
+  --sk-red-dark: #B81430;
+  --sk-navy: #1B365D;
+  --sk-navy-light: #2A4A7A;
+  --sk-navy-dark: #0F1F38;
+
+  /* === Variações de Vermelho === */
+  --sk-red-50: #FEF2F2;
+  --sk-red-100: #FEE2E2;
+  --sk-red-200: #FECACA;
+  --sk-red-300: #FCA5A5;
+  --sk-red-400: #F87171;
+  --sk-red-500: #E31837;
+  --sk-red-600: #DC2626;
+  --sk-red-700: #B91C1C;
+  --sk-red-800: #991B1B;
+  --sk-red-900: #7F1D1D;
+
+  /* === Variações de Azul Marinho === */
+  --sk-navy-50: #EFF6FF;
+  --sk-navy-100: #DBEAFE;
+  --sk-navy-200: #BFDBFE;
+  --sk-navy-300: #93C5FD;
+  --sk-navy-400: #60A5FA;
+  --sk-navy-500: #1B365D;
+  --sk-navy-600: #162D4F;
+  --sk-navy-700: #112240;
+  --sk-navy-800: #0C1832;
+  --sk-navy-900: #070D1A;
+
+  /* === Transições Suaves === */
+  --transition-fast: 150ms ease;
+  --transition-normal: 300ms ease;
+  --transition-slow: 500ms ease;
+
+  /* === Animações === */
+  --animation-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  --animation-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ============================================
+   TEMA CLARO (Padrão)
+   ============================================ */
+:root,
+[data-theme="light"] {
+  /* Backgrounds */
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #F8FAFC;
+  --bg-tertiary: #F1F5F9;
+  --bg-accent: #E31837;
+  --bg-accent-hover: #B81430;
+  --bg-surface: #FFFFFF;
+  --bg-surface-hover: #F8FAFC;
+  --bg-sidebar: #FAFBFC;
+  --bg-card: #FFFFFF;
+  --bg-card-hover: #F8FAFC;
+
+  /* Textos */
+  --text-primary: #1B365D;
+  --text-secondary: #475569;
+  --text-tertiary: #64748B;
+  --text-muted: #94A3B8;
+  --text-inverse: #FFFFFF;
+  --text-accent: #E31837;
+  --text-link: #E31837;
+  --text-link-hover: #B81430;
+
+  /* Bordas */
+  --border-primary: #E2E8F0;
+  --border-secondary: #CBD5E1;
+  --border-accent: #E31837;
+  --border-focus: #E31837;
+
+  /* Sombras */
+  --shadow-sm: 0 1px 2px 0 rgba(27, 54, 93, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(27, 54, 93, 0.1), 0 2px 4px -2px rgba(27, 54, 93, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(27, 54, 93, 0.1), 0 4px 6px -4px rgba(27, 54, 93, 0.1);
+  --shadow-xl: 0 20px 25px -5px rgba(27, 54, 93, 0.1), 0 8px 10px -6px rgba(27, 54, 93, 0.1);
+  --shadow-glow: 0 0 20px rgba(227, 24, 55, 0.15);
+
+  /* Status */
+  --color-success: #10B981;
+  --color-success-bg: #D1FAE5;
+  --color-warning: #F59E0B;
+  --color-warning-bg: #FEF3C7;
+  --color-error: #EF4444;
+  --color-error-bg: #FEE2E2;
+  --color-info: #3B82F6;
+  --color-info-bg: #DBEAFE;
+
+  /* Gradientes */
+  --gradient-primary: linear-gradient(135deg, #E31837 0%, #1B365D 100%);
+  --gradient-accent: linear-gradient(135deg, #E31837 0%, #FF3D5A 100%);
+  --gradient-surface: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%);
+}
+
+/* ============================================
+   TEMA ESCURO
+   ============================================ */
+[data-theme="dark"] {
+  /* Backgrounds */
+  --bg-primary: #0F172A;
+  --bg-secondary: #1E293B;
+  --bg-tertiary: #334155;
+  --bg-accent: #E31837;
+  --bg-accent-hover: #FF3D5A;
+  --bg-surface: #1E293B;
+  --bg-surface-hover: #334155;
+  --bg-sidebar: #0F172A;
+  --bg-card: #1E293B;
+  --bg-card-hover: #334155;
+
+  /* Textos */
+  --text-primary: #F1F5F9;
+  --text-secondary: #CBD5E1;
+  --text-tertiary: #94A3B8;
+  --text-muted: #64748B;
+  --text-inverse: #0F172A;
+  --text-accent: #FF3D5A;
+  --text-link: #FF3D5A;
+  --text-link-hover: #E31837;
+
+  /* Bordas */
+  --border-primary: #334155;
+  --border-secondary: #475569;
+  --border-accent: #E31837;
+  --border-focus: #FF3D5A;
+
+  /* Sombras */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -4px rgba(0, 0, 0, 0.3);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.4);
+  --shadow-glow: 0 0 20px rgba(227, 24, 55, 0.3);
+
+  /* Status */
+  --color-success: #34D399;
+  --color-success-bg: #064E3B;
+  --color-warning: #FBBF24;
+  --color-warning-bg: #78350F;
+  --color-error: #F87171;
+  --color-error-bg: #7F1D1D;
+  --color-info: #60A5FA;
+  --color-info-bg: #1E3A8A;
+
+  /* Gradientes */
+  --gradient-primary: linear-gradient(135deg, #E31837 0%, #1B365D 100%);
+  --gradient-accent: linear-gradient(135deg, #FF3D5A 0%, #E31837 100%);
+  --gradient-surface: linear-gradient(180deg, #1E293B 0%, #0F172A 100%);
+}
+
+/* ============================================
+   CLASSES UTILITÁRIAS
+   ============================================ */
+
+/* Botões */
+.btn-primary {
+  background: var(--bg-accent);
+  color: var(--text-inverse);
+  transition: all var(--transition-normal);
+}
+
+.btn-primary:hover {
+  background: var(--bg-accent-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-secondary {
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  border: 1px solid var(--border-primary);
+  transition: all var(--transition-normal);
+}
+
+.btn-secondary:hover {
+  background: var(--bg-surface-hover);
+  border-color: var(--border-accent);
+}
+
+/* Cards */
+.card-sk {
+  background: var(--bg-card);
+  border: 1px solid var(--border-primary);
+  border-radius: 12px;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-normal);
+}
+
+.card-sk:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+  border-color: var(--border-accent);
+}
+
+/* Links */
+.link-sk {
+  color: var(--text-link);
+  transition: color var(--transition-fast);
+}
+
+.link-sk:hover {
+  color: var(--text-link-hover);
+}
+
+/* ============================================
+   ANIMAÇÕES
+   ============================================ */
+
+/* Fade In */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Slide In */
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Scale In */
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Pulse */
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+/* Shimmer (Loading) */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Classes de Animação */
+.animate-fade-in {
+  animation: fadeIn 0.4s var(--animation-smooth) forwards;
+}
+
+.animate-slide-in-left {
+  animation: slideInLeft 0.4s var(--animation-smooth) forwards;
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.4s var(--animation-smooth) forwards;
+}
+
+.animate-slide-in-up {
+  animation: slideInUp 0.4s var(--animation-smooth) forwards;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.3s var(--animation-smooth) forwards;
+}
+
+.animate-pulse-sk {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, var(--bg-tertiary) 25%, var(--bg-secondary) 50%, var(--bg-tertiary) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* Stagger Animation Delays */
+.stagger-1 { animation-delay: 0.1s; }
+.stagger-2 { animation-delay: 0.2s; }
+.stagger-3 { animation-delay: 0.3s; }
+.stagger-4 { animation-delay: 0.4s; }
+.stagger-5 { animation-delay: 0.5s; }
+
+/* Hover Animations */
+.hover-lift {
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.hover-scale {
+  transition: transform var(--transition-normal);
+}
+
+.hover-scale:hover {
+  transform: scale(1.02);
+}
+
+.hover-glow {
+  transition: box-shadow var(--transition-normal);
+}
+
+.hover-glow:hover {
+  box-shadow: var(--shadow-glow);
+}
+
+/* ============================================
+   SCROLLBAR PERSONALIZADA
+   ============================================ */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-secondary);
+  border-radius: 4px;
+  transition: background var(--transition-fast);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--sk-red);
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-secondary) var(--bg-secondary);
+}
+
+/* ============================================
+   FOCO E ACESSIBILIDADE
+   ============================================ */
+:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 2px;
+}
+
+/* Reduzir movimento para usuários que preferem */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
