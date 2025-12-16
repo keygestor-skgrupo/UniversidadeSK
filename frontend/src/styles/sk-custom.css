@@ -1,0 +1,288 @@
+/* ============================================
+   UNIVERSIDADE SK - Customizações de Estilo
+   Arquivo injetado no build do Frappe LMS
+   ============================================ */
+
+/* ============================================
+   Override cores do Frappe UI para usar cores SK
+   ============================================ */
+:root {
+  /* Cores primárias SK */
+  --primary: #E31837;
+  --primary-light: #FF3D5A;
+  --primary-dark: #B81430;
+
+  /* Frappe UI color overrides */
+  --fg-color: #1B365D;
+  --bg-color: #FFFFFF;
+  --text-color: #1B365D;
+  --heading-color: #1B365D;
+
+  /* Button colors - substituir preto por vermelho SK */
+  --btn-primary-bg: #E31837;
+  --btn-primary-bg-hover: #B81430;
+  --btn-primary-color: #FFFFFF;
+
+  /* Ink colors (usadas nos textos) */
+  --ink-gray-9: #1B365D;
+  --ink-gray-7: #334155;
+  --ink-gray-5: #64748B;
+  --ink-gray-4: #94A3B8;
+  --ink-gray-3: #CBD5E1;
+  --ink-gray-2: #E2E8F0;
+  --ink-gray-1: #F1F5F9;
+
+  /* Surface colors */
+  --surface-white: #FFFFFF;
+  --surface-gray-1: #F8FAFC;
+  --surface-gray-2: #F1F5F9;
+  --surface-gray-3: #E2E8F0;
+
+  /* Red accent - usar vermelho SK */
+  --ink-red-1: #FEF2F2;
+  --ink-red-2: #FEE2E2;
+  --ink-red-3: #E31837;
+  --ink-red-4: #B81430;
+
+  /* Blue accent - usar azul SK */
+  --ink-blue-1: #EFF6FF;
+  --ink-blue-2: #DBEAFE;
+  --ink-blue-3: #1B365D;
+  --ink-blue-4: #112240;
+
+  /* SK Brand Colors */
+  --sk-red: #E31837;
+  --sk-red-light: #FF3D5A;
+  --sk-red-dark: #B81430;
+  --sk-navy: #1B365D;
+  --sk-navy-light: #2A4A7A;
+  --sk-navy-dark: #0F1F38;
+
+  /* Backgrounds */
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #F8FAFC;
+  --bg-tertiary: #F1F5F9;
+
+  /* Text */
+  --text-primary: #1B365D;
+  --text-secondary: #475569;
+  --text-tertiary: #64748B;
+
+  /* Borders */
+  --border-color: #E2E8F0;
+}
+
+/* Dark mode overrides */
+[data-theme="dark"] {
+  --surface-white: #1E293B;
+  --surface-gray-1: #334155;
+  --surface-gray-2: #475569;
+  --ink-gray-9: #F1F5F9;
+  --ink-gray-7: #CBD5E1;
+  --ink-gray-5: #94A3B8;
+
+  --bg-primary: #0F172A;
+  --bg-secondary: #1E293B;
+  --bg-tertiary: #334155;
+  --text-primary: #F1F5F9;
+  --text-secondary: #CBD5E1;
+  --text-tertiary: #94A3B8;
+  --border-color: #334155;
+}
+
+/* ============================================
+   FRAPPE UI BUTTON OVERRIDES
+   Substituir botões pretos por cores SK
+   ============================================ */
+
+/* Botão Solid (primário) - era preto, agora vermelho SK */
+button[class*="variant-solid"],
+.btn[class*="variant-solid"],
+[class*="Button"][class*="solid"],
+button.bg-ink-gray-9,
+.bg-ink-gray-9 {
+  background-color: #E31837 !important;
+  border-color: #E31837 !important;
+}
+
+button[class*="variant-solid"]:hover,
+.btn[class*="variant-solid"]:hover,
+[class*="Button"][class*="solid"]:hover,
+button.bg-ink-gray-9:hover,
+.bg-ink-gray-9:hover {
+  background-color: #B81430 !important;
+  border-color: #B81430 !important;
+}
+
+/* Override direto para classes do Frappe UI */
+.bg-surface-gray-6,
+.bg-surface-gray-7 {
+  background-color: #E31837 !important;
+}
+
+/* Links e textos de destaque */
+.text-ink-blue-link {
+  color: #E31837 !important;
+}
+
+.text-ink-blue-link:hover {
+  color: #B81430 !important;
+}
+
+/* Checkbox e Radio checked state */
+input[type="checkbox"]:checked,
+input[type="radio"]:checked {
+  background-color: #E31837 !important;
+  border-color: #E31837 !important;
+}
+
+/* Switch/Toggle checked */
+[role="switch"][aria-checked="true"],
+.toggle-checked {
+  background-color: #E31837 !important;
+}
+
+/* Badge/Tag primary */
+.badge-primary,
+[class*="badge"][class*="primary"] {
+  background-color: rgba(227, 24, 55, 0.1) !important;
+  color: #E31837 !important;
+}
+
+/* Tab active */
+[role="tab"][aria-selected="true"],
+.tab-active {
+  border-color: #E31837 !important;
+  color: #E31837 !important;
+}
+
+/* Progress bar */
+[role="progressbar"] > div,
+.progress-bar {
+  background-color: #E31837 !important;
+}
+
+/* Spinner/Loading */
+.animate-spin {
+  border-top-color: #E31837 !important;
+}
+
+/* ============================================
+   Animações de Entrada
+   ============================================ */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Animar cards ao aparecer */
+.course-card,
+.batch-card,
+[class*="Card"] {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+/* Hover suave em cards interativos */
+.course-card,
+.batch-card,
+[class*="Card"]:not([class*="static"]) {
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.course-card:hover,
+.batch-card:hover,
+[class*="Card"]:not([class*="static"]):hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(27, 54, 93, 0.15);
+  border-color: #E31837;
+}
+
+/* Sidebar items animation */
+nav a,
+.sidebar-item,
+[class*="sidebar"] a {
+  transition: all 0.2s ease;
+}
+
+nav a:hover,
+.sidebar-item:hover,
+[class*="sidebar"] a:hover {
+  background-color: rgba(227, 24, 55, 0.05);
+  color: #E31837;
+}
+
+/* ============================================
+   Melhorias visuais no Scrollbar (webkit)
+   ============================================ */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-tertiary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
+  transition: background 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--sk-red);
+}
+
+/* ============================================
+   DARK MODE - Frappe UI Overrides
+   ============================================ */
+[data-theme="dark"] button[class*="variant-solid"],
+[data-theme="dark"] .btn[class*="variant-solid"],
+[data-theme="dark"] [class*="Button"][class*="solid"] {
+  background-color: #E31837 !important;
+  border-color: #E31837 !important;
+}
+
+[data-theme="dark"] button[class*="variant-solid"]:hover,
+[data-theme="dark"] .btn[class*="variant-solid"]:hover,
+[data-theme="dark"] [class*="Button"][class*="solid"]:hover {
+  background-color: #FF3D5A !important;
+  border-color: #FF3D5A !important;
+}
+
+/* ============================================
+   Focus Accessibility
+   ============================================ */
+:focus-visible {
+  outline: 2px solid var(--sk-red);
+  outline-offset: 2px;
+}
+
+/* ============================================
+   Page transitions
+   ============================================ */
+main,
+[class*="page-content"],
+[class*="PageContent"] {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Botões com efeito hover */
+button,
+.btn,
+[role="button"] {
+  transition: all 0.3s ease;
+}
+
+button:active,
+.btn:active,
+[role="button"]:active {
+  transform: scale(0.98);
+}
