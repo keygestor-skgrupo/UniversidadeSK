@@ -1,0 +1,77 @@
+version: "3.8"
+
+# ============================================
+# UNIVERSIDADE SK - Docker Compose para EasyPanel
+# ============================================
+
+services:
+  frappe-lms:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: universidade-sk-lms
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+      - "9000:9000"
+    environment:
+      # Site
+      - SITE_NAME=capacita.skgrupo.com
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin}
+
+      # MariaDB
+      - MARIADB_HOST=mariadb
+      - MARIADB_PORT=3306
+      - MARIADB_ROOT_USER=root
+      - MARIADB_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD:-123}
+
+      # Redis
+      - REDIS_CACHE=redis://redis:6379/0
+      - REDIS_QUEUE=redis://redis:6379/1
+      - REDIS_SOCKETIO=redis://redis:6379/2
+    volumes:
+      - frappe-sites:/home/frappe/frappe-bench/sites
+      - frappe-logs:/home/frappe/frappe-bench/logs
+    depends_on:
+      - mariadb
+      - redis
+    networks:
+      - universidade-sk
+
+  mariadb:
+    image: mariadb:10.6
+    container_name: universidade-sk-mariadb
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD:-123}
+      - MYSQL_CHARACTER_SET_SERVER=utf8mb4
+      - MYSQL_COLLATION_SERVER=utf8mb4_unicode_ci
+    volumes:
+      - mariadb-data:/var/lib/mysql
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --skip-character-set-client-handshake
+      - --innodb-buffer-pool-size=512M
+      - --innodb-log-file-size=128M
+    networks:
+      - universidade-sk
+
+  redis:
+    image: redis:alpine
+    container_name: universidade-sk-redis
+    restart: unless-stopped
+    volumes:
+      - redis-data:/data
+    networks:
+      - universidade-sk
+
+volumes:
+  frappe-sites:
+  frappe-logs:
+  mariadb-data:
+  redis-data:
+
+networks:
+  universidade-sk:
+    driver: bridge

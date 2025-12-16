@@ -1,65 +1,112 @@
-# Universidade SK - Customizações LMS
+# Universidade SK - Frappe LMS Customizado
 
-Customizações do Frappe LMS para a plataforma Universidade SK.
+Plataforma de aprendizado da Universidade SK baseada no Frappe LMS com customizações visuais.
 
 ## Cores da Marca
 
 - **Vermelho SK**: `#E31837`
 - **Azul Marinho SK**: `#1B365D`
 
+## Deploy no EasyPanel
+
+### Passo 1: Configurar Fonte Git
+
+1. No EasyPanel, acesse o serviço `frappe-lms`
+2. Vá em **Fonte** > **Git**
+3. Configure:
+   - **URL do Repositório**: `https://github.com/keygestor-skgrupo/UniversidadeSK.git`
+   - **Ramo**: `main`
+   - **Caminho de Build**: `/`
+4. Clique em **Salvar**
+
+### Passo 2: Configurar Variáveis de Ambiente
+
+Em **Ambiente**, adicione:
+
+```
+SITE_NAME=capacita.skgrupo.com
+ADMIN_PASSWORD=sua_senha_segura
+MARIADB_ROOT_PASSWORD=senha_do_banco
+MARIADB_HOST=frappe-lms-mariadb
+REDIS_CACHE=redis://frappe-lms-redis:6379/0
+REDIS_QUEUE=redis://frappe-lms-redis:6379/1
+REDIS_SOCKETIO=redis://frappe-lms-redis:6379/2
+```
+
+### Passo 3: Deploy
+
+Clique em **Implantar** e aguarde o build.
+
 ## Estrutura do Projeto
 
 ```
 UniversidadeSK/
+├── Dockerfile                 # Build da imagem
+├── docker-compose.yml         # Orquestração local
+├── docker/
+│   └── entrypoint.sh          # Script de inicialização
 ├── frontend/
 │   ├── src/
-│   │   ├── index.css          # Estilos globais customizados
+│   │   ├── index.css          # Estilos globais SK
 │   │   ├── styles/
-│   │   │   └── theme.css      # Variáveis de tema
+│   │   │   └── theme.css      # Sistema de temas
 │   │   └── components/
 │   │       └── Icons/
-│   │           └── SKLogo.vue # Componente do logo
+│   │           └── SKLogo.vue # Componente logo
 │   ├── public/
 │   │   └── images/
 │   │       └── sk-logo.png    # Logo PNG
-│   └── tailwind.config.js     # Configuração Tailwind
+│   └── tailwind.config.js     # Cores Tailwind
 ├── scripts/
-│   └── deploy.sh              # Script de deploy
+│   ├── deploy.sh              # Deploy manual
+│   └── apply-styles.sh        # Aplicar estilos
 └── README.md
-```
-
-## Deploy no EasyPanel
-
-### Configuração Automática
-
-1. Clone este repositório no servidor
-2. Execute o script de deploy:
-
-```bash
-cd /home/frappe/frappe-bench
-git clone https://github.com/SEU_USUARIO/UniversidadeSK.git /tmp/sk-custom
-bash /tmp/sk-custom/scripts/deploy.sh
-```
-
-### Webhook de Deploy
-
-Configure o webhook no EasyPanel para disparar automaticamente:
-```
-http://seu-servidor:3000/api/deploy/SEU_TOKEN
 ```
 
 ## Funcionalidades
 
 - Tema claro/escuro com cores SK
+- Botões vermelhos SK (substituindo preto padrão)
 - Animações suaves (fade, slide, scale)
-- Botões vermelhos SK (substituindo preto)
-- Cards com hover effect
+- Cards com efeito hover
 - Scrollbar customizada
 - Loading skeleton animado
 - Efeito glassmorphism
+- Suporte a Português Brasil
 
-## Idioma
+## Desenvolvimento Local
 
-Configure o idioma para Português Brasil nas configurações do Frappe:
-1. Acesse: Setup > System Settings
-2. Defina "Language" como "pt-BR"
+```bash
+# Clonar repositório
+git clone https://github.com/keygestor-skgrupo/UniversidadeSK.git
+cd UniversidadeSK
+
+# Copiar variáveis de ambiente
+cp .env.example .env
+
+# Subir containers
+docker-compose up -d
+
+# Acessar
+# http://localhost:8000
+```
+
+## Atualizações
+
+Para atualizar as customizações:
+
+1. Faça as alterações nos arquivos
+2. Commit e push para o GitHub
+3. No EasyPanel, clique em **Implantar** novamente
+
+O EasyPanel vai rebuildar a imagem com as novas customizações.
+
+## Credenciais Padrão
+
+- **URL**: https://capacita.skgrupo.com
+- **Usuário**: Administrator
+- **Senha**: (definida em ADMIN_PASSWORD)
+
+## Suporte
+
+Para dúvidas ou problemas, abra uma issue no repositório.
