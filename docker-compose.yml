@@ -6,6 +6,9 @@ version: "3.8"
 
 services:
   frappe-lms:
+    # Para deploy manual, use a imagem do Docker Hub
+    # image: keygestorskgrupo/universidade-sk:latest
+    # Para build local, descomente as linhas abaixo:
     build:
       context: .
       dockerfile: Dockerfile
