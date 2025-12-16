@@ -3,6 +3,9 @@
 # ============================================
 FROM frappe/bench:latest
 
+# Cache buster - mude para forcar rebuild
+ARG CACHE_BUST=v4
+
 # Argumentos de build
 ARG FRAPPE_BRANCH=version-15
 ARG LMS_BRANCH=develop
@@ -23,18 +26,14 @@ RUN bench init ${BENCH_DIR} \
 
 WORKDIR ${BENCH_DIR}
 
-# Copiar CSS customizado SK para pasta pública do LMS
-COPY --chown=frappe:frappe lms_custom/public/css/sk-theme.css apps/lms/lms/public/css/sk-theme.css
+# Substituir index.html com versao customizada SK (CSS inline)
+COPY --chown=frappe:frappe frontend/index.html apps/lms/frontend/index.html
 
 # Copiar logo SK
 RUN mkdir -p apps/lms/lms/public/images
 COPY --chown=frappe:frappe frontend/public/images/sk-logo.png apps/lms/lms/public/images/sk-logo.png
 
-# Adicionar CSS SK ao hooks.py do LMS (método oficial do Frappe)
-RUN sed -i 's/web_include_css = "lms.bundle.css"/web_include_css = ["lms.bundle.css", "\/assets\/lms\/css\/sk-theme.css"]/' apps/lms/lms/hooks.py || \
-    echo 'web_include_css = ["lms.bundle.css", "/assets/lms/css/sk-theme.css"]' >> apps/lms/lms/hooks.py
-
-# Build do LMS
+# Build do LMS (vai usar nosso index.html customizado)
 RUN bench build --app lms
 
 # Copiar entrypoint customizado
