@@ -4,7 +4,7 @@
 FROM frappe/bench:latest
 
 # Cache buster - mude para forcar rebuild
-ARG CACHE_BUST=v4
+ARG CACHE_BUST=v5-force-rebuild
 
 # Argumentos de build
 ARG FRAPPE_BRANCH=version-15
