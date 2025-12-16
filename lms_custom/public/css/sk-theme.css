@@ -1,0 +1,197 @@
+/* ============================================
+   UNIVERSIDADE SK - Tema Customizado
+   Injetado via Frappe hooks (web_include_css)
+   ============================================ */
+
+/* ============================================
+   Cores SK - Variáveis CSS
+   ============================================ */
+:root {
+  --sk-red: #E31837;
+  --sk-red-light: #FF3D5A;
+  --sk-red-dark: #B81430;
+  --sk-navy: #1B365D;
+  --sk-navy-light: #2A4A7A;
+  --sk-navy-dark: #0F1F38;
+}
+
+/* ============================================
+   BOTÕES - Substituir preto por vermelho SK
+   ============================================ */
+
+/* Botões primários/solid */
+.btn-primary,
+.btn.btn-primary,
+button.btn-primary,
+[class*="btn-primary"],
+.bg-gray-900,
+.bg-black,
+button[class*="solid"],
+[class*="variant-solid"] {
+  background-color: #E31837 !important;
+  border-color: #E31837 !important;
+  color: white !important;
+}
+
+.btn-primary:hover,
+.btn.btn-primary:hover,
+button.btn-primary:hover,
+[class*="btn-primary"]:hover,
+.bg-gray-900:hover,
+.bg-black:hover,
+button[class*="solid"]:hover,
+[class*="variant-solid"]:hover {
+  background-color: #B81430 !important;
+  border-color: #B81430 !important;
+}
+
+/* Frappe UI specific overrides */
+.bg-surface-gray-6,
+.bg-surface-gray-7,
+.bg-ink-gray-9 {
+  background-color: #E31837 !important;
+}
+
+/* ============================================
+   LINKS
+   ============================================ */
+a.text-blue-600,
+a.text-blue-500,
+.text-blue-600,
+.text-blue-500,
+a[class*="link"] {
+  color: #E31837 !important;
+}
+
+a.text-blue-600:hover,
+a.text-blue-500:hover,
+.text-blue-600:hover,
+.text-blue-500:hover,
+a[class*="link"]:hover {
+  color: #B81430 !important;
+}
+
+/* ============================================
+   CHECKBOXES E RADIOS
+   ============================================ */
+input[type="checkbox"]:checked,
+input[type="radio"]:checked {
+  background-color: #E31837 !important;
+  border-color: #E31837 !important;
+}
+
+/* Switch/Toggle */
+[role="switch"][aria-checked="true"],
+.toggle-checked,
+input[type="checkbox"][role="switch"]:checked {
+  background-color: #E31837 !important;
+}
+
+/* ============================================
+   TABS
+   ============================================ */
+[role="tab"][aria-selected="true"],
+.tab-active,
+.nav-link.active {
+  border-color: #E31837 !important;
+  color: #E31837 !important;
+}
+
+/* ============================================
+   PROGRESS BARS
+   ============================================ */
+[role="progressbar"] > div,
+.progress-bar,
+.progress > div {
+  background-color: #E31837 !important;
+}
+
+/* ============================================
+   BADGES
+   ============================================ */
+.badge-primary,
+.badge.badge-primary,
+[class*="badge"][class*="primary"] {
+  background-color: rgba(227, 24, 55, 0.1) !important;
+  color: #E31837 !important;
+}
+
+/* ============================================
+   FOCUS STATES
+   ============================================ */
+:focus-visible,
+*:focus-visible {
+  outline-color: #E31837 !important;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: #E31837 !important;
+  box-shadow: 0 0 0 2px rgba(227, 24, 55, 0.2) !important;
+}
+
+/* ============================================
+   CARDS - Hover effect
+   ============================================ */
+.course-card:hover,
+.card:hover,
+[class*="Card"]:hover {
+  border-color: #E31837 !important;
+  box-shadow: 0 10px 40px rgba(227, 24, 55, 0.1) !important;
+}
+
+/* ============================================
+   SPINNER/LOADING
+   ============================================ */
+.animate-spin,
+.spinner,
+[class*="spinner"] {
+  border-top-color: #E31837 !important;
+}
+
+/* ============================================
+   SELECTION
+   ============================================ */
+::selection {
+  background-color: rgba(227, 24, 55, 0.2) !important;
+  color: #1B365D !important;
+}
+
+/* ============================================
+   SCROLLBAR
+   ============================================ */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #E31837;
+}
+
+/* ============================================
+   DARK MODE
+   ============================================ */
+[data-theme="dark"] .btn-primary,
+[data-theme="dark"] button[class*="solid"],
+[data-theme="dark"] [class*="variant-solid"] {
+  background-color: #E31837 !important;
+  border-color: #E31837 !important;
+}
+
+[data-theme="dark"] .btn-primary:hover,
+[data-theme="dark"] button[class*="solid"]:hover,
+[data-theme="dark"] [class*="variant-solid"]:hover {
+  background-color: #FF3D5A !important;
+  border-color: #FF3D5A !important;
+}

@@ -23,26 +23,18 @@ RUN bench init ${BENCH_DIR} \
 
 WORKDIR ${BENCH_DIR}
 
-# Criar diretórios necessários para customizações
-RUN mkdir -p apps/lms/frontend/src/styles \
-    && mkdir -p apps/lms/frontend/src/components/Icons \
-    && mkdir -p apps/lms/frontend/public/images
-
-# Copiar CSS customizado SK
-COPY --chown=frappe:frappe frontend/src/styles/sk-custom.css apps/lms/frontend/src/styles/sk-custom.css
-
-# Copiar tailwind.config.js com cores SK
-COPY --chown=frappe:frappe frontend/tailwind.config.js apps/lms/frontend/tailwind.config.js
+# Copiar CSS customizado SK para pasta pública do LMS
+COPY --chown=frappe:frappe lms_custom/public/css/sk-theme.css apps/lms/lms/public/css/sk-theme.css
 
 # Copiar logo SK
-COPY --chown=frappe:frappe frontend/public/images/sk-logo.png apps/lms/frontend/public/images/sk-logo.png
+RUN mkdir -p apps/lms/lms/public/images
+COPY --chown=frappe:frappe frontend/public/images/sk-logo.png apps/lms/lms/public/images/sk-logo.png
 
-# INJETAR import do CSS SK no index.css original (adicionar ao final)
-RUN echo "" >> apps/lms/frontend/src/index.css \
-    && echo "/* Universidade SK Customizations */" >> apps/lms/frontend/src/index.css \
-    && echo "@import './styles/sk-custom.css';" >> apps/lms/frontend/src/index.css
+# Adicionar CSS SK ao hooks.py do LMS (método oficial do Frappe)
+RUN sed -i 's/web_include_css = "lms.bundle.css"/web_include_css = ["lms.bundle.css", "\/assets\/lms\/css\/sk-theme.css"]/' apps/lms/lms/hooks.py || \
+    echo 'web_include_css = ["lms.bundle.css", "/assets/lms/css/sk-theme.css"]' >> apps/lms/lms/hooks.py
 
-# Build do LMS com customizações
+# Build do LMS
 RUN bench build --app lms
 
 # Copiar entrypoint customizado
