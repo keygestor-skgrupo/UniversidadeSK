@@ -1,0 +1,13 @@
+# Nixpacks config - Força uso do Dockerfile
+# Desabilita detecção automática de framework
+
+[phases.build]
+# Não detectar automaticamente - usar Dockerfile
+cmds = []
+
+[phases.install]
+cmds = []
+
+[phases.setup]
+# Usar Dockerfile diretamente
+nixPkgs = []

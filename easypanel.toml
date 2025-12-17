@@ -1,0 +1,11 @@
+# Configuração EasyPanel - Força uso do Dockerfile customizado
+# Isso desabilita o template automático do Frappe
+
+[build]
+# Usar nosso Dockerfile, não o template do EasyPanel
+dockerfile = "Dockerfile"
+context = "."
+
+[deploy]
+# Não usar template Frappe
+template = ""
