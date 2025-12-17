@@ -12,12 +12,12 @@ cd ${BENCH_DIR}
 
 # Funções de utilidade
 wait_for_db() {
-    echo "Verificando MariaDB em ${DB_HOST:-mariadb}:${DB_PORT:-3306}..."
+    echo "Verificando MariaDB em ${MARIADB_HOST:-mariadb}:${MARIADB_PORT:-3306}..."
     local max_attempts=30
     local attempt=1
 
     while [ $attempt -le $max_attempts ]; do
-        if mysql -h "${DB_HOST:-mariadb}" -P "${DB_PORT:-3306}" -u root -p"${DB_ROOT_PASSWORD:-frappe_root_password}" -e "SELECT 1" &>/dev/null; then
+        if mysql -h "${MARIADB_HOST:-mariadb}" -P "${MARIADB_PORT:-3306}" -u root -p"${MARIADB_ROOT_PASSWORD:-123}" -e "SELECT 1" &>/dev/null; then
             echo "MariaDB esta pronto!"
             return 0
         fi
@@ -58,15 +58,15 @@ wait_for_redis() {
 echo ""
 echo "--- Verificando dependencias ---"
 wait_for_db
-wait_for_redis "${REDIS_CACHE:-redis://redis-cache:6379}"
+wait_for_redis "${REDIS_CACHE:-redis://redis:6379}"
 
 # Configurar Redis e MariaDB externos
 echo ""
 echo "--- Configurando conexoes ---"
 
-if [ -n "$DB_HOST" ]; then
-    echo "Configurando DB_HOST: $DB_HOST"
-    bench set-config -g db_host "$DB_HOST"
+if [ -n "$MARIADB_HOST" ]; then
+    echo "Configurando MARIADB_HOST: $MARIADB_HOST"
+    bench set-config -g db_host "$MARIADB_HOST"
 fi
 
 if [ -n "$REDIS_CACHE" ]; then
@@ -96,10 +96,10 @@ if [ ! -d "sites/${SITE_NAME}" ]; then
     echo "==========================================="
 
     bench new-site ${SITE_NAME} \
-        --db-host ${DB_HOST:-mariadb} \
-        --db-port ${DB_PORT:-3306} \
-        --db-root-username ${DB_ROOT_USER:-root} \
-        --db-root-password ${DB_ROOT_PASSWORD:-frappe_root_password} \
+        --db-host ${MARIADB_HOST:-mariadb} \
+        --db-port ${MARIADB_PORT:-3306} \
+        --db-root-username ${MARIADB_ROOT_USER:-root} \
+        --db-root-password ${MARIADB_ROOT_PASSWORD:-123} \
         --admin-password ${ADMIN_PASSWORD:-admin} \
         --no-mariadb-socket \
         --force
