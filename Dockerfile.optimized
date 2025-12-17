@@ -1,0 +1,60 @@
+# ============================================
+# UNIVERSIDADE SK - Frappe LMS Customizado
+# OPTIMIZADO - Camadas menores para facilitar push
+# ============================================
+FROM frappe/bench:latest
+
+# Cache buster - mude para forcar rebuild
+ARG CACHE_BUST=v6-optimized
+
+# Argumentos de build
+ARG FRAPPE_BRANCH=version-15
+ARG LMS_BRANCH=develop
+
+# Variáveis de ambiente
+ENV BENCH_DIR=/home/frappe/frappe-bench
+
+USER frappe
+WORKDIR /home/frappe
+
+# CAMADA 1: Inicializar bench (sem apps)
+RUN bench init ${BENCH_DIR} \
+    --frappe-branch ${FRAPPE_BRANCH} \
+    --python python3.11 \
+    --skip-redis-config-generation
+
+WORKDIR ${BENCH_DIR}
+
+# CAMADA 2: Instalar LMS app (separado para cache melhor)
+RUN bench get-app lms --branch ${LMS_BRANCH}
+
+# CAMADA 3: Substituir index.html com versao customizada SK (CSS inline)
+COPY --chown=frappe:frappe frontend/index.html apps/lms/frontend/index.html
+
+# CAMADA 4: Copiar logo SK
+RUN mkdir -p apps/lms/lms/public/images
+COPY --chown=frappe:frappe frontend/public/images/sk-logo.png apps/lms/lms/public/images/sk-logo.png
+
+# CAMADA 5: Build do LMS (vai usar nosso index.html customizado)
+RUN bench build --app lms
+
+# CAMADA 6: Limpar cache para reduzir tamanho
+RUN rm -rf ${BENCH_DIR}/.git \
+    && rm -rf ${BENCH_DIR}/apps/frappe/.git \
+    && rm -rf ${BENCH_DIR}/apps/lms/.git \
+    && rm -rf ${BENCH_DIR}/env/lib/python*/site-packages/pip* \
+    && rm -rf ${BENCH_DIR}/env/lib/python*/site-packages/setuptools* \
+    && find ${BENCH_DIR} -name "__pycache__" -type d -exec rm -rf {} + 2>/dev/null || true \
+    && find ${BENCH_DIR} -name "*.pyc" -delete 2>/dev/null || true \
+    && find ${BENCH_DIR} -name "node_modules" -type d -exec rm -rf {} + 2>/dev/null || true
+
+# Copiar entrypoint customizado
+COPY --chown=frappe:frappe docker/entrypoint.sh /home/frappe/entrypoint.sh
+RUN chmod +x /home/frappe/entrypoint.sh
+
+# Expor portas
+EXPOSE 8000 9000
+
+# Entrypoint
+ENTRYPOINT ["/home/frappe/entrypoint.sh"]
+CMD ["bench", "start"]

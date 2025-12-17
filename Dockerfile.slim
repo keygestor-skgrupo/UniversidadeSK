@@ -1,0 +1,86 @@
+# ============================================
+# UNIVERSIDADE SK - Frappe LMS Customizado SLIM
+# Usa multi-stage build para reduzir tamanho
+# ============================================
+
+# Stage 1: Build stage
+FROM frappe/bench:latest AS builder
+
+ARG FRAPPE_BRANCH=version-15
+ARG LMS_BRANCH=develop
+ENV BENCH_DIR=/home/frappe/frappe-bench
+
+USER frappe
+WORKDIR /home/frappe
+
+# Inicializar bench e instalar LMS
+RUN bench init ${BENCH_DIR} \
+    --frappe-branch ${FRAPPE_BRANCH} \
+    --python python3.11 \
+    --skip-redis-config-generation \
+    && cd ${BENCH_DIR} \
+    && bench get-app lms --branch ${LMS_BRANCH}
+
+WORKDIR ${BENCH_DIR}
+
+# Copiar arquivos customizados ANTES do build
+COPY --chown=frappe:frappe frontend/index.html apps/lms/frontend/index.html
+RUN mkdir -p apps/lms/lms/public/images
+COPY --chown=frappe:frappe frontend/public/images/sk-logo.png apps/lms/lms/public/images/sk-logo.png
+
+# Build do LMS
+RUN bench build --app lms
+
+# Limpar arquivos desnecessarios para reducir tamanho
+RUN rm -rf ${BENCH_DIR}/.git \
+    && rm -rf ${BENCH_DIR}/apps/frappe/.git \
+    && rm -rf ${BENCH_DIR}/apps/lms/.git \
+    && rm -rf ${BENCH_DIR}/apps/lms/node_modules \
+    && rm -rf ${BENCH_DIR}/apps/frappe/node_modules \
+    && find ${BENCH_DIR} -name "__pycache__" -type d -exec rm -rf {} + 2>/dev/null || true \
+    && find ${BENCH_DIR} -name "*.pyc" -delete 2>/dev/null || true \
+    && find ${BENCH_DIR} -name ".git" -type d -exec rm -rf {} + 2>/dev/null || true \
+    && find ${BENCH_DIR} -name "*.log" -delete 2>/dev/null || true \
+    && rm -rf ${BENCH_DIR}/env/lib/python*/site-packages/pip* \
+    && rm -rf ${BENCH_DIR}/env/lib/python*/site-packages/setuptools* \
+    && rm -rf /home/frappe/.cache \
+    && rm -rf /home/frappe/.npm
+
+# Stage 2: Runtime stage (imagem menor)
+FROM python:3.11-slim
+
+# Instalar dependencias minimas de runtime
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
+    git \
+    libmariadb3 \
+    mariadb-client \
+    nodejs \
+    npm \
+    redis-tools \
+    supervisor \
+    wkhtmltopdf \
+    && rm -rf /var/lib/apt/lists/* \
+    && apt-get clean
+
+# Criar usuario frappe
+RUN useradd -m -s /bin/bash frappe
+
+# Copiar bench do builder
+COPY --from=builder --chown=frappe:frappe /home/frappe/frappe-bench /home/frappe/frappe-bench
+
+# Copiar entrypoint
+COPY --chown=frappe:frappe docker/entrypoint.sh /home/frappe/entrypoint.sh
+RUN chmod +x /home/frappe/entrypoint.sh
+
+# Configurar ambiente
+ENV BENCH_DIR=/home/frappe/frappe-bench
+ENV PATH="/home/frappe/frappe-bench/env/bin:$PATH"
+
+USER frappe
+WORKDIR /home/frappe/frappe-bench
+
+EXPOSE 8000 9000
+
+ENTRYPOINT ["/home/frappe/entrypoint.sh"]
+CMD ["bench", "start"]

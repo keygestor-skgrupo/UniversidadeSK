@@ -1,0 +1,77 @@
+# ============================================
+# UNIVERSIDADE SK - Docker Compose para EasyPanel
+# Use este arquivo para criar um App "Docker Compose" no EasyPanel
+# ============================================
+version: "3.8"
+
+services:
+  # Aplicação principal - usa nossa imagem customizada
+  universidade-sk:
+    image: williamferreirati/universidade-sk:latest
+    container_name: universidade-sk-app
+    restart: unless-stopped
+    depends_on:
+      - mariadb
+      - redis-cache
+      - redis-queue
+    environment:
+      - SITE_NAME=capacita.skgrupo.com
+      - DB_HOST=mariadb
+      - DB_PORT=3306
+      - DB_ROOT_PASSWORD=frappe_root_password
+      - REDIS_CACHE=redis://redis-cache:6379
+      - REDIS_QUEUE=redis://redis-queue:6379
+      - REDIS_SOCKETIO=redis://redis-queue:6379
+      - SOCKETIO_PORT=9000
+    ports:
+      - "8000:8000"
+      - "9000:9000"
+    volumes:
+      - sites_data:/home/frappe/frappe-bench/sites
+      - logs_data:/home/frappe/frappe-bench/logs
+    networks:
+      - universidade-network
+
+  # MariaDB
+  mariadb:
+    image: mariadb:10.6
+    container_name: universidade-sk-db
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=frappe_root_password
+      - MYSQL_CHARACTER_SET_SERVER=utf8mb4
+      - MYSQL_COLLATION_SERVER=utf8mb4_unicode_ci
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --skip-character-set-client-handshake
+      - --innodb-buffer-pool-size=512M
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    networks:
+      - universidade-network
+
+  # Redis para cache
+  redis-cache:
+    image: redis:alpine
+    container_name: universidade-sk-redis-cache
+    restart: unless-stopped
+    networks:
+      - universidade-network
+
+  # Redis para queue e socketio
+  redis-queue:
+    image: redis:alpine
+    container_name: universidade-sk-redis-queue
+    restart: unless-stopped
+    networks:
+      - universidade-network
+
+volumes:
+  sites_data:
+  logs_data:
+  mariadb_data:
+
+networks:
+  universidade-network:
+    driver: bridge
