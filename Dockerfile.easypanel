@@ -1,0 +1,91 @@
+# Dockerfile para EasyPanel - Evita detecção automática de Frappe
+# Este Dockerfile usa uma abordagem que impede o EasyPanel de aplicar seu template
+
+FROM williamferreirati/universidade-sk:latest
+
+# Remover qualquer indicação de que é um projeto Frappe para evitar template auto
+# O EasyPanel detecta Frappe pelo init.sh ou pelo bench
+
+USER root
+
+# Criar script de inicialização que NÃO pode ser sobrescrito
+RUN cat > /startup.sh << 'STARTUPEOF'
+#!/bin/bash
+set -e
+
+echo "==========================================="
+echo "UNIVERSIDADE SK - EasyPanel Deploy"
+echo "Imagem customizada com branding SK"
+echo "==========================================="
+
+cd /home/frappe/frappe-bench
+
+# Configurar Redis se variáveis estiverem definidas
+if [ -n "$REDIS_URL" ]; then
+    echo "Configurando Redis: $REDIS_URL"
+    bench set-config -g redis_cache "$REDIS_URL"
+    bench set-config -g redis_queue "$REDIS_URL"
+    bench set-config -g redis_socketio "$REDIS_URL"
+fi
+
+if [ -n "$REDIS_CACHE" ]; then
+    bench set-config -g redis_cache "$REDIS_CACHE"
+fi
+
+if [ -n "$REDIS_QUEUE" ]; then
+    bench set-config -g redis_queue "$REDIS_QUEUE"
+fi
+
+if [ -n "$REDIS_SOCKETIO" ]; then
+    bench set-config -g redis_socketio "$REDIS_SOCKETIO"
+fi
+
+# Configurar MariaDB
+if [ -n "$MARIADB_HOST" ] || [ -n "$DATABASE_HOST" ]; then
+    DB_HOST="${MARIADB_HOST:-$DATABASE_HOST}"
+    echo "Configurando DB Host: $DB_HOST"
+    bench set-config -g db_host "$DB_HOST"
+fi
+
+# Configurar site
+SITE_NAME="${SITE_NAME:-capacita.skgrupo.com}"
+echo "Site: $SITE_NAME"
+
+if [ ! -d "sites/${SITE_NAME}" ]; then
+    echo "Criando site $SITE_NAME..."
+    bench new-site $SITE_NAME \
+        --db-host ${MARIADB_HOST:-${DATABASE_HOST:-mariadb}} \
+        --db-port ${MARIADB_PORT:-${DATABASE_PORT:-3306}} \
+        --db-root-username ${MARIADB_ROOT_USER:-root} \
+        --db-root-password ${MARIADB_ROOT_PASSWORD:-${DATABASE_ROOT_PASSWORD:-123}} \
+        --admin-password ${ADMIN_PASSWORD:-admin} \
+        --no-mariadb-socket \
+        --force || true
+
+    bench --site $SITE_NAME install-app lms || true
+fi
+
+bench use $SITE_NAME
+bench --site $SITE_NAME migrate || true
+bench --site $SITE_NAME clear-cache || true
+
+echo "==========================================="
+echo "Iniciando Universidade SK..."
+echo "==========================================="
+
+exec bench start
+STARTUPEOF
+
+RUN chmod +x /startup.sh
+
+# Remover workspace para evitar conflitos com EasyPanel
+RUN rm -rf /workspace 2>/dev/null || true
+
+USER frappe
+WORKDIR /home/frappe/frappe-bench
+
+# Usar nosso script como ENTRYPOINT - mais difícil de sobrescrever
+ENTRYPOINT ["/startup.sh"]
+CMD []
+
+EXPOSE 8000 9000
